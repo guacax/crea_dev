@@ -1,0 +1,80 @@
+.poster-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  overflow: hidden;
+  font-family: monospace;
+  color: white;
+}
+
+/* Animation du fond sombre ou clair */
+.poster-container.light .artist-background {
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color 1s ease;
+}
+
+.poster-container.dark .artist-background {
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: background-color 1s ease;
+}
+
+/* Arrière-plan artistes */
+.artist-background-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(40, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 4px;
+  padding: 10px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.grid-cell {
+  font-size: clamp(10px, 1vw, 16px);
+  font-family: 'Arial', sans-serif;
+  color: rgb(154, 154, 154);
+  text-align: center;
+  line-height: 1;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: appear 0.6s ease-in-out forwards;
+  /* Use --mod-i instead of --i % 40, set --mod-i in JS */
+  animation-delay: calc(var(--mod-i) * 0.03s);
+  white-space: nowrap;
+}
+
+.grid-cell.visible {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.grid-cell.invisible {
+  opacity: 0;
+  color: transparent;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Titre du festival */
+.festival-title {
+  position: absolute;
+  font-size: 3vw;
+  font-weight: bold;
+  z-index: 2;
+  user-select: none;
+  white-space: nowrap;
+}

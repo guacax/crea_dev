@@ -1,4 +1,3 @@
-// FestivalPoster.jsx
 import React, { useEffect, useRef, useState } from "react";
 import "./FestivalPoster.css";
 
@@ -8,9 +7,9 @@ const artists = [
   "Röyksopp", "Four Tet", "Caribou", "ODESZA"
 ];
 
-
-const GRID_SIZE = 40; // largeur x hauteur
+const GRID_SIZE = 40; 
 const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
+
 
 
 export default function FestivalPoster() {
@@ -19,26 +18,33 @@ export default function FestivalPoster() {
   const logoRef = useRef(null);
   const containerRef = useRef(null);
   const velocity = useRef({ x: 2, y: 2 });
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
-  // Mise à jour de la liste des artistes toutes les 5s
  useEffect(() => {
-  const interval = setInterval(() => {
-    // Remplir la "grille" avec noms d’artistes OU vide
-    const newGrid = Array.from({ length: TOTAL_CELLS }, () => {
-      const shouldShow = Math.random() > 0.3; // 70% chance de montrer un nom
-      return shouldShow
-        ? artists[Math.floor(Math.random() * artists.length)]
-        : ""; // Vide
-    });
+    const interval = setInterval(() => {
+      const newGrid = Array.from({ length: TOTAL_CELLS }, () => {
+        const shouldShow = Math.random() > 0.5; 
+        return shouldShow
+          ? artists[Math.floor(Math.random() * artists.length)]
+          : ""; 
+      });
 
-    setRandomArtists(newGrid);
-    setBgDark(prev => !prev);
-  }, 4000); // toutes les 4s
+      setRandomArtists(newGrid);
+      setBgDark(prev => !prev);
+    }, 4000);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
-  // Mouvement rebondissant du titre
+  
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   useEffect(() => {
     const move = () => {
       const logo = logoRef.current;
@@ -69,22 +75,27 @@ export default function FestivalPoster() {
     <div
       className={`poster-container ${bgDark ? "dark" : "light"}`}
       ref={containerRef}>
-<div className="artist-background-grid">
-  {randomArtists.map((artist, i) => (
-    <span
-      key={i}
-      className={`grid-cell ${artist ? "visible" : "invisible"}`}
-      style={{ "--i": i }}
-    >
-      {artist}
-    </span>
-  ))}
-</div>
-
-
+      <div className="artist-background-grid">
+        {randomArtists.map((artist, i) => (
+          <span
+            key={i}
+            className={`grid-cell ${artist ? "visible" : "invisible"}`}
+            style={{ "--i": i }}
+          >
+            {artist}
+          </span>
+        ))}
+      </div>
       <div className="festival-title" ref={logoRef}>
         WE LOVE GREEN 2026 
       </div>
+       <div
+        className="custom-cursor"
+        style={{
+          left: `${cursorPos.x}px`,
+          top: `${cursorPos.y}px`
+        }}
+      />
     </div>
   );
 }

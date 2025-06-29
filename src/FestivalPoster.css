@@ -8,7 +8,6 @@
   color: white;
 }
 
-/* Animation du fond sombre ou clair */
 .poster-container.light .artist-background {
   background-color: rgba(0, 0, 0, 0.3);
   transition: background-color 1s ease;
@@ -19,7 +18,6 @@
   transition: background-color 1s ease;
 }
 
-/* Arrière-plan artistes */
 .artist-background-grid {
   position: absolute;
   inset: 0;
@@ -37,11 +35,11 @@
   font-family: 'Arial', sans-serif;
   color: rgb(154, 154, 154);
   text-align: center;
+  font-size: large;
   line-height: 1;
   opacity: 0;
   transform: scale(0.8);
   animation: appear 0.6s ease-in-out forwards;
-  /* Use --mod-i instead of --i % 40, set --mod-i in JS */
   animation-delay: calc(var(--mod-i) * 0.03s);
   white-space: nowrap;
 }
@@ -69,7 +67,6 @@
   }
 }
 
-/* Titre du festival */
 .festival-title {
   position: absolute;
   font-size: 3vw;
@@ -77,4 +74,21 @@
   z-index: 2;
   user-select: none;
   white-space: nowrap;
+}
+
+.poster-container {
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  mix-blend-mode: difference;
+  transition: transform 0.05s ease;
 }

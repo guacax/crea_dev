@@ -7,7 +7,7 @@ const artists = [
   "Röyksopp", "Four Tet", "Caribou", "ODESZA"
 ];
 
-const GRID_SIZE = 40; 
+const GRID_SIZE = 40;
 const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
 
 
@@ -20,13 +20,13 @@ export default function FestivalPoster() {
   const velocity = useRef({ x: 2, y: 2 });
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
- useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       const newGrid = Array.from({ length: TOTAL_CELLS }, () => {
-        const shouldShow = Math.random() > 0.5; 
+        const shouldShow = Math.random() > 0.5;
         return shouldShow
           ? artists[Math.floor(Math.random() * artists.length)]
-          : ""; 
+          : "";
       });
 
       setRandomArtists(newGrid);
@@ -36,7 +36,7 @@ export default function FestivalPoster() {
     return () => clearInterval(interval);
   }, []);
 
-  
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -75,27 +75,29 @@ export default function FestivalPoster() {
     <div
       className={`poster-container ${bgDark ? "dark" : "light"}`}
       ref={containerRef}>
-      <div className="artist-background-grid">
-        {randomArtists.map((artist, i) => (
-          <span
-            key={i}
-            className={`grid-cell ${artist ? "visible" : "invisible"}`}
-            style={{ "--i": i }}
-          >
-            {artist}
-          </span>
-        ))}
+        <div className="artist-background-grid">
+          {randomArtists.map((artist, i) => (
+            <span
+              key={i}
+              className={`grid-cell ${artist ? "visible" : "invisible"}`}
+              style={{ "--i": i }}
+            >
+              {artist}
+            </span>
+          ))}
+        </div>
+    <div className="border"></div>
+        
+        <div className="festival-title" ref={logoRef}>
+          WE LOVE GREEN 2026
+        </div>
+        <div
+          className="custom-cursor"
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`
+          }}
+        />
       </div>
-      <div className="festival-title" ref={logoRef}>
-        WE LOVE GREEN 2026 
-      </div>
-       <div
-        className="custom-cursor"
-        style={{
-          left: `${cursorPos.x}px`,
-          top: `${cursorPos.y}px`
-        }}
-      />
-    </div>
   );
 }
